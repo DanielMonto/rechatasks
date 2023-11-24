@@ -1,0 +1,15 @@
+{% extends '../base.html' %}
+{% block title %} crear tarea {% endblock title %}
+{% block content %}
+<h4 class="text-danger">{{error}}</h4>
+<main>
+    <form method="post" action="{% url 'createtask' %}">
+        {% csrf_token %}
+        <label for="name">Nombre de tarea:</label>
+        <input name="name" required placeholder="nombre de la tarea" id="name"/>
+        <label for="description">Descripción:</label>
+        <input name="description" placeholder="descripcion de la tarea" value="" id="description"/>
+        <button type="submit">Crear tarea</button>
+    </form>
+</main>
+{% endblock %}

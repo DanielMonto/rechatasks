@@ -1,5 +1,15 @@
 {% extends '../base.html' %}
 {% block title %} continuar secion cerrada{% endblock title %}
 {% block content %}
-<p>login page</p>
+<h4>{{error}}</h4>
+<main>
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <label for="username">Nombre e usuario:</label>
+        <input name="username" required placeholder="nombre de usuario" id="username"/>
+        <label for="password">Contraseña:</label>
+        <input name="password" required placeholder="contraseña" id="password"/>
+        <button type="submit">Ingresar</button>
+    </form>
+</main>
 {% endblock %}

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Task(models.Model):
-    name=models.TextField(unique=True)
+    name=models.TextField()
     description=models.TextField()
     created=models.DateTimeField(auto_now_add=True)
     completed=models.BooleanField(default=False)
@@ -18,6 +18,7 @@ class SubTask(models.Model):
     description=models.TextField()
     created=models.DateTimeField(auto_now_add=True)
     completed=models.BooleanField(default=False)
+    important=models.BooleanField(default=False)
     task=models.ForeignKey(Task,on_delete=models.CASCADE)
     class Meta:
         ordering=['-created']

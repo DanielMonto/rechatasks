@@ -1,0 +1,43 @@
+{% extends '../base.html' %}
+{% block title %} principal {% endblock title %}
+{% block content %}
+<h4 class="text-danger">{{error}}</h4>
+<main>
+    {% if not tasks %}
+    <h5>no tienes tareas {{user.username}}</h5>
+    {% else %}
+    {% for task in tasks %}
+   <form method="get" action="{% url 'subtasks' task.name %}">
+        {% csrf_token %}
+        <button type="submit">
+            <h4 class="{% if task.completed %}text-success{% else %}text-danger{% endif %}">
+                {{task.name}}
+            </h4>
+            <p class="{% if task.completed %}text-success{% else %}text-danger{% endif %}">
+                {{task.description}}
+            </p>
+        </button>
+    <form id="completeForm" method="post" action="{% url 'tasks' %}">
+        <input style="display: none;" type="checkbox" name="forcomplete" value="true"/>
+        <input style="display: none;" name="name" value="{{task.name}}"/>
+        <input type="checkbox" name="completed" value="{{task.completed}}" onchange="submitCompleteForm();"/>
+    </form>
+    <form method="delete" action="{% url 'tasks' %}">
+        <input style="display: none;" name="name" value="{{task.name}}"/>
+        <button type="submit"><i class="fas fa-trash"></i></button>
+    </form>
+    {% endfor %}
+    {% endif %}
+        <button onclick="bct();">
+            +
+        </button>
+</main>
+<script>
+    function bct(){
+        window.location.href="{% url 'createtask' %}"
+    };
+    function submitCompleteForm(){
+        document.getElementById("completeForm").submit();
+    }
+</script>
+{% endblock %}

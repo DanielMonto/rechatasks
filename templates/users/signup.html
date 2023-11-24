@@ -1,4 +1,16 @@
 {% extends '../base.html' %}
 {% block content %}
-<p>signup page</p>
+<h4>{{error}}</h4>
+<main>
+    <form method="post" action="{% url 'signup' %}">
+    {% csrf_token %}
+        <label for="username">Nombre e usuario:</label>
+        <input name="username" required placeholder="nombre de usuario" id="username"/>
+        <label for="password">Contraseña:</label>
+        <input name="password" required placeholder="contraseña" id="password"/>
+        <label for="repassword">Comprobar contraseña:</label>
+        <input name="repassword" required placeholder="contraseña" id="repassword"/>
+        <button type="submit">Ingresar</button>
+    </form>
+</main>
 {% endblock content %}

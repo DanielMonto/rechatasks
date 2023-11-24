@@ -1,7 +1,6 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,AnonymousUser
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import login,logout 
-from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest
 from django.shortcuts import render,redirect
 from django.views import View
@@ -31,23 +30,27 @@ class LoginView(View):
     def post(self,request:HttpRequest):
         try:
             user=User.objects.get(username=request.POST['username'])
-            if make_password(request.POST['password'])==user.password:
+            if user.check_password(request.POST['password']):
                 login(request,user)
                 return redirect('tasks')
             else:
-                return render(request,'user/login.html',{'error':'contraseña incorrecta'})
+                return render(request,'users/login.html',{'error':'contraseña incorrecta'})
         except:
-            return render(request,'user/login.html',{'error':'usuario no existe'})
+            return render(request,'users/login.html',{'error':'usuario no existe'})
 
 class LogoutView(View):
-    @login_required
     def get(self,request:HttpRequest):
-        logout(request)
-        return redirect('home')
+        if isinstance(request.user,AnonymousUser):
+            return redirect('login')
+        else:
+            logout(request)
+            return redirect('home')
 
 class DeleteUserView(View):
-    @login_required
     def get(self,request:HttpRequest):
-        logout(request)
-        request.user.delete()
-        return redirect('home')
+        if isinstance(request.user,AnonymousUser):
+            return redirect('login')
+        else:
+            logout(request)
+            request.user.delete()
+            return redirect('home')

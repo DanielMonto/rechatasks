@@ -6,7 +6,7 @@ def mainpoint(request):
     return redirect('home')
 
 urlpatterns = [
-    path('',mainpoint),
+    path('',mainpoint,name='main'),
     path('admin/', admin.site.urls),
     path('messages/',include('apps.messagesrenamed.urls')),
     path('tasks/',include('apps.tasks.urls')),
